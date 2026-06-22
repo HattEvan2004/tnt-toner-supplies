@@ -32,7 +32,7 @@ export const nav = [
  * AI illustration. Replace before launch.
  */
 export const images = {
-  hero: "",
+  hero: "/printer.png",
   featured: "",
   about: "",
 } as const;

@@ -1,6 +1,25 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { site, trustBar } from "../lib/site";
+import { site, trustBar, images } from "../lib/site";
 import PrinterArt from "./PrinterArt";
+
+export function HeroVisual() {
+  const [imgError, setImgError] = useState(false);
+  // Use the real printer photo when available; fall back to the SVG printer
+  // until the file exists (so there's never a broken image).
+  if (images.hero && !imgError) {
+    return (
+      <img
+        src={images.hero}
+        onError={() => setImgError(true)}
+        alt="Office laser printer with a freshly printed sheet — genuine toner from TNT Toner Supplies"
+        className="w-full h-auto object-contain drop-shadow-[0_30px_50px_rgba(26,21,18,0.22)]"
+        style={{ animation: "float-soft 6s ease-in-out infinite" }}
+      />
+    );
+  }
+  return <PrinterArt />;
+}
 
 export default function Hero() {
   return (
@@ -92,8 +111,8 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="relative w-full max-w-[560px]">
-            <PrinterArt />
+          <div className="relative w-full max-w-[600px]">
+            <HeroVisual />
             {/* floating trust chip */}
             <div className="absolute bottom-2 left-2 md:left-4 bg-paper rounded-full border border-hair shadow-card px-5 py-2.5 flex items-center gap-2.5">
               <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-cyan)" }} />
