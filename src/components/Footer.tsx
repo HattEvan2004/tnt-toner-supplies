@@ -42,6 +42,13 @@ export default function Footer() {
               </li>
               <li>{site.hours}</li>
             </ul>
+
+            <h4 className="mt-7 font-mono text-[12px] uppercase tracking-[0.16em]" style={{ color: "rgba(243,238,228,0.5)" }}>
+              Delivery area
+            </h4>
+            <p className="mt-3 text-[15px]" style={{ color: "rgba(243,238,228,0.78)" }}>
+              {site.serviceArea}
+            </p>
           </div>
         </div>
 

@@ -22,19 +22,32 @@ export default function Testimonials() {
           <h2 className="mt-3 text-[clamp(2rem,4vw,3rem)]">
             Trusted across the HRM
           </h2>
+          <p className="mt-4 text-ink-soft text-[18px] leading-relaxed">
+            What customers value most about working with TNT — fast delivery,
+            fair pricing, and a real local team on the phone.
+          </p>
         </Reveal>
 
         <div className="mt-12 grid md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.1}>
-              <figure className="h-full bg-paper rounded-2xl border border-hair shadow-card p-8 flex flex-col">
-                <Stars color={t.color} />
-                <blockquote className="mt-5 text-[18px] leading-relaxed text-ink flex-1">
-                  “{t.quote}”
+              <figure className="group h-full bg-paper rounded-2xl border border-hair shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col">
+                <span
+                  className="font-display font-extrabold text-[2.6rem] leading-none"
+                  style={{ color: t.color }}
+                  aria-hidden="true"
+                >
+                  &ldquo;
+                </span>
+                <blockquote className="mt-2 text-[19px] md:text-[20px] leading-relaxed text-ink flex-1">
+                  {t.quote}
                 </blockquote>
-                <figcaption className="mt-7 flex items-center gap-3.5">
+                <div className="mt-6">
+                  <Stars color={t.color} />
+                </div>
+                <figcaption className="mt-5 flex items-center gap-3.5 pt-5 border-t border-hair">
                   <span
-                    className="h-11 w-11 rounded-full grid place-items-center font-display font-bold text-paper text-[15px] shrink-0"
+                    className="h-12 w-12 rounded-full grid place-items-center font-display font-bold text-paper text-[16px] shrink-0"
                     style={{ background: t.color }}
                   >
                     {t.initials}

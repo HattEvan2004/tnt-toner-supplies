@@ -1,9 +1,11 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import BrandStrip from "./components/BrandStrip";
-import WhyChoose from "./components/WhyChoose";
-import About from "./components/About";
+import Products from "./components/Products";
 import FeaturedProduct from "./components/FeaturedProduct";
+import WhyChoose from "./components/WhyChoose";
+import LocalDelivery from "./components/LocalDelivery";
+import About from "./components/About";
 import Services from "./components/Services";
 import Sustainability from "./components/Sustainability";
 import Testimonials from "./components/Testimonials";
@@ -18,9 +20,11 @@ export default function App() {
       <main>
         <Hero />
         <BrandStrip />
-        <WhyChoose />
-        <About />
+        <Products />
         <FeaturedProduct />
+        <WhyChoose />
+        <LocalDelivery />
+        <About />
         <Services />
         <Sustainability />
         <Testimonials />

@@ -1,64 +1,33 @@
 import Reveal from "./Reveal";
-import { featured } from "../lib/site";
-
-function Cartridge() {
-  return (
-    <svg viewBox="0 0 360 260" fill="none" className="w-full max-w-[380px] h-auto" aria-label="Brother TN-850 toner cartridge">
-      <defs>
-        <linearGradient id="cart" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#322b24" />
-          <stop offset="1" stopColor="#191512" />
-        </linearGradient>
-        <linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#1198bc" />
-          <stop offset="1" stopColor="#0d7a98" />
-        </linearGradient>
-      </defs>
-      <ellipse cx="180" cy="232" rx="138" ry="16" fill="rgba(26,21,18,0.14)" />
-      {/* body */}
-      <rect x="58" y="92" width="244" height="96" rx="14" fill="url(#cart)" />
-      {/* drum end cap */}
-      <rect x="40" y="104" width="34" height="72" rx="10" fill="url(#cap)" />
-      <circle cx="57" cy="140" r="9" fill="#0b6580" />
-      {/* handle */}
-      <rect x="120" y="66" width="120" height="34" rx="12" fill="#252019" />
-      <rect x="134" y="76" width="92" height="6" rx="3" fill="rgba(243,238,228,0.22)" />
-      {/* label */}
-      <rect x="150" y="118" width="128" height="46" rx="6" fill="#f3eee4" />
-      <text x="214" y="138" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fontWeight="600" fill="#1a1512">TN-850</text>
-      <text x="214" y="154" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" letterSpacing="1.5" fill="#8a8073">HIGH YIELD · BLACK</text>
-      {/* CMYK ticks */}
-      <rect x="78" y="170" width="10" height="8" rx="1.5" fill="var(--color-cyan)" />
-      <rect x="92" y="170" width="10" height="8" rx="1.5" fill="var(--color-magenta)" />
-      <rect x="106" y="170" width="10" height="8" rx="1.5" fill="var(--color-yellow)" />
-      <rect x="120" y="170" width="10" height="8" rx="1.5" fill="#f3eee4" />
-    </svg>
-  );
-}
+import ImageSlot from "./ImageSlot";
+import { featured, images } from "../lib/site";
+import { requestPricing } from "../lib/prefill";
 
 export default function FeaturedProduct() {
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-20 md:py-28 bg-paper-2 border-y border-hair">
       <div className="container-x">
         <Reveal>
           <div className="grid lg:grid-cols-2 rounded-3xl overflow-hidden border border-hair shadow-lift bg-paper">
-            {/* visual side */}
-            <div className="relative bg-ink p-10 md:p-12 flex flex-col justify-center items-center">
-              <div
-                className="halftone absolute inset-0 opacity-[0.08]"
-                style={{ animation: "drift 8s linear infinite" }}
-                aria-hidden="true"
-              />
-              <span className="relative font-mono text-[12px] uppercase tracking-[0.18em] text-paper/70 self-start">
+            {/* product photo side */}
+            <div className="relative p-6 md:p-8 flex flex-col">
+              <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-ink-soft">
                 {featured.badge}
               </span>
-              <div className="relative my-6" style={{ animation: "float-soft 5s ease-in-out infinite" }}>
-                <Cartridge />
+              <div className="mt-5 flex-1">
+                <ImageSlot
+                  src={images.featured || undefined}
+                  alt={`${featured.name} — ${featured.type}`}
+                  label="Add a real product photo of the Brother TN-850 cartridge."
+                  ratio="aspect-square"
+                  rounded="rounded-2xl"
+                  className="h-full"
+                />
               </div>
             </div>
 
             {/* detail side */}
-            <div className="p-9 md:p-12 flex flex-col justify-center">
+            <div className="p-9 md:p-12 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-hair">
               <h2 className="text-[clamp(2rem,4vw,2.8rem)]">{featured.name}</h2>
               <p className="mt-2 text-ink-soft text-[18px]">{featured.type}</p>
 
@@ -78,18 +47,32 @@ export default function FeaturedProduct() {
               <p className="mt-5 font-mono text-[13px] text-ink-faint">{featured.fits}</p>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <a
-                  href="#contact"
+                <button
+                  type="button"
+                  onClick={() =>
+                    requestPricing({
+                      requestType: "Check availability",
+                      printerBrand: "Brother",
+                      cartridge: featured.name.replace("Brother ", ""),
+                    })
+                  }
                   className="font-body font-semibold px-7 py-3.5 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  Check compatibility
-                </a>
-                <a
-                  href="#contact"
+                  Check availability
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    requestPricing({
+                      requestType: "Request pricing",
+                      printerBrand: "Brother",
+                      cartridge: featured.name.replace("Brother ", ""),
+                    })
+                  }
                   className="font-body font-semibold px-7 py-3.5 rounded-full border border-hair-strong hover:bg-paper-2 transition-all duration-300"
                 >
                   Ask about pricing
-                </a>
+                </button>
               </div>
             </div>
           </div>

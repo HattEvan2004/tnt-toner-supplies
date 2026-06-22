@@ -21,13 +21,25 @@ export const nav = [
   { label: "Products", href: "#products" },
   { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Order", href: "#order" },
+  { label: "Testimonials", href: "#reviews" },
+  { label: "Contact", href: "#contact" },
 ] as const;
+
+/**
+ * Real photo slots. Drop final product / business photography in
+ * `public/` and point these at it (e.g. "/photos/hero-delivery.jpg").
+ * While empty, the UI shows a clean, labelled placeholder — never a fake
+ * AI illustration. Replace before launch.
+ */
+export const images = {
+  hero: "",
+  featured: "",
+  about: "",
+} as const;
 
 export const trustBar = [
   "Free local delivery",
-  "Brand-name toner",
+  "Genuine brand-name toner",
   "Printer support",
   "Eco-conscious recycling",
 ] as const;
@@ -51,6 +63,73 @@ export const printerBrandOptions = [
 ] as const;
 
 export const contactMethods = ["Email", "Phone", "Either"] as const;
+
+/**
+ * Product / category cards. Each "Request pricing" button prefills the
+ * order form with the matching brand and scrolls to it.
+ */
+export const productCategories = [
+  {
+    name: "Brother toner",
+    brand: "Brother",
+    color: "var(--color-cyan)",
+    desc: "TN-series cartridges and drum units for Brother HL, MFC and DCP laser printers.",
+  },
+  {
+    name: "HP toner",
+    brand: "HP",
+    color: "var(--color-magenta)",
+    desc: "Genuine HP cartridges for LaserJet and Color LaserJet — standard and high-yield.",
+  },
+  {
+    name: "Canon toner",
+    brand: "Canon",
+    color: "var(--color-yellow)",
+    desc: "Cartridges for Canon imageCLASS and i-SENSYS office laser printers.",
+  },
+  {
+    name: "Xerox toner",
+    brand: "Xerox",
+    color: "var(--color-cyan)",
+    desc: "Toner and supplies for Xerox VersaLink, WorkCentre and Phaser machines.",
+  },
+  {
+    name: "Lexmark toner",
+    brand: "Lexmark",
+    color: "var(--color-magenta)",
+    desc: "Return-program and standard cartridges for Lexmark mono and colour laser printers.",
+  },
+  {
+    name: "Printer supplies",
+    brand: "",
+    color: "var(--color-ink)",
+    desc: "Drum units, maintenance kits, fusers, waste toner boxes and paper — sourced to order.",
+  },
+] as const;
+
+/** The HRM local-delivery promise. */
+export const deliveryPoints = [
+  {
+    color: "var(--color-cyan)",
+    title: "Fast local delivery",
+    body: "Order today and get it the same or next business day, right to your office door.",
+  },
+  {
+    color: "var(--color-magenta)",
+    title: "No extra delivery charge",
+    body: "Local delivery across the HRM is always free — no minimum order, no courier fees.",
+  },
+  {
+    color: "var(--color-yellow)",
+    title: "Help choosing the right cartridge",
+    body: "Not sure which toner fits? Send your printer model and we'll confirm it for you.",
+  },
+  {
+    color: "var(--color-ink)",
+    title: "Business-friendly service",
+    body: "Standing orders, invoicing and a real local contact who knows your account.",
+  },
+] as const;
 
 /** The four reasons map to the four print plates: C / M / Y / K. */
 export const reasons = [

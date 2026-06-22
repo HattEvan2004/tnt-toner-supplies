@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import { RegStrip } from "./Brand";
 import {
@@ -7,6 +7,7 @@ import {
   printerBrandOptions,
   contactMethods,
 } from "../lib/site";
+import { PREFILL_EVENT, type Prefill } from "../lib/prefill";
 
 type Form = {
   requestType: string;
@@ -38,50 +39,120 @@ const empty: Form = {
   notes: "",
 };
 
+/**
+ * Optional form endpoint. Set VITE_FORM_ENDPOINT in your Vercel project
+ * (Settings → Environment Variables) to a service that emails submissions —
+ * e.g. a Web3Forms / Formspree URL, or your own API route. No secrets are
+ * hardcoded here. When it's not set, the form falls back to opening the
+ * customer's email app with everything pre-filled, so a request is never lost.
+ */
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined;
+
 const labelCls = "block font-mono text-[12px] uppercase tracking-wider text-ink-soft mb-1.5";
 const fieldCls =
-  "w-full rounded-lg border border-hair bg-paper px-3.5 py-2.5 text-[15px] text-ink placeholder:text-ink-faint focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/30 transition";
+  "w-full rounded-lg border border-hair bg-paper px-3.5 py-3 text-[16px] text-ink placeholder:text-ink-faint focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/30 transition";
+
+type Status = "idle" | "sending" | "sent" | "mailto" | "error";
+
+function buildMessage(f: Form) {
+  const subject = `${f.requestType} — ${f.business || f.name || "TNT customer"}`;
+  const body = [
+    `Request type: ${f.requestType}`,
+    ``,
+    `Name: ${f.name}`,
+    `Business: ${f.business}`,
+    `Email: ${f.email}`,
+    `Phone: ${f.phone}`,
+    `Preferred contact: ${f.contactMethod}`,
+    ``,
+    `Printer brand: ${f.printerBrand}`,
+    `Printer model: ${f.printerModel}`,
+    `Toner / cartridge #: ${f.cartridge}`,
+    `Quantity: ${f.quantity}`,
+    ``,
+    `Delivery area / address: ${f.area}`,
+    ``,
+    `Notes:`,
+    f.notes,
+  ].join("\n");
+  return { subject, body };
+}
+
+function openMailto(f: Form) {
+  const { subject, body } = buildMessage(f);
+  window.location.href = `${site.emailHref}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+}
 
 export default function OrderForm() {
   const [f, setF] = useState<Form>(empty);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+
+  // Prefill from the product cards / featured product "Request pricing" buttons.
+  useEffect(() => {
+    const onPrefill = (e: Event) => {
+      const d = (e as CustomEvent<Prefill>).detail || {};
+      setF((prev) => ({
+        ...prev,
+        ...(d.requestType ? { requestType: d.requestType } : {}),
+        ...(d.printerBrand && printerBrandOptions.includes(d.printerBrand as (typeof printerBrandOptions)[number])
+          ? { printerBrand: d.printerBrand }
+          : {}),
+        ...(d.cartridge ? { cartridge: d.cartridge } : {}),
+        ...(d.note ? { notes: prev.notes ? prev.notes : d.note } : {}),
+      }));
+    };
+    window.addEventListener(PREFILL_EVENT, onPrefill);
+    return () => window.removeEventListener(PREFILL_EVENT, onPrefill);
+  }, []);
 
   const set =
     (k: keyof Form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
       setF((prev) => ({ ...prev, [k]: e.target.value }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = `${f.requestType} — ${f.business || f.name || "TNT customer"}`;
-    const body = [
-      `Request type: ${f.requestType}`,
-      ``,
-      `Name: ${f.name}`,
-      `Business: ${f.business}`,
-      `Email: ${f.email}`,
-      `Phone: ${f.phone}`,
-      `Preferred contact: ${f.contactMethod}`,
-      ``,
-      `Printer brand: ${f.printerBrand}`,
-      `Printer model: ${f.printerModel}`,
-      `Toner / cartridge #: ${f.cartridge}`,
-      `Quantity: ${f.quantity}`,
-      ``,
-      `Delivery area / address: ${f.area}`,
-      ``,
-      `Notes:`,
-      f.notes,
-    ].join("\n");
 
-    window.location.href = `${site.emailHref}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    // No endpoint configured → mailto fallback (typed data is preserved).
+    if (!FORM_ENDPOINT) {
+      openMailto(f);
+      setStatus("mailto");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const { subject } = buildMessage(f);
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ subject, ...f }),
+      });
+      if (!res.ok) throw new Error(`Bad status ${res.status}`);
+      setStatus("sent");
+      setF(empty);
+    } catch {
+      // Network/endpoint failure → don't lose the request, fall back to email.
+      openMailto(f);
+      setStatus("mailto");
+    }
   };
 
+  const statusMessage =
+    status === "sending"
+      ? "Sending your request…"
+      : status === "sent"
+        ? "Thanks — your request is in. We'll be in touch shortly."
+        : status === "mailto"
+          ? "Opening your email app with the details filled in — just hit send."
+          : status === "error"
+            ? "Something went wrong. Please call us, or email directly."
+            : "We'll confirm the right product, price it, and arrange free local delivery.";
+
   return (
-    <section id="order" className="py-20 md:py-28 bg-paper-2 border-y border-hair scroll-mt-20">
+    <section id="order" className="py-20 md:py-28 scroll-mt-20">
       <div className="container-x grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-start">
         {/* left: the conversion pitch */}
         <Reveal>
@@ -188,15 +259,20 @@ export default function OrderForm() {
 
               <button
                 type="submit"
-                className="mt-6 w-full font-body font-semibold px-6 py-3.5 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5"
+                disabled={status === "sending"}
+                className="mt-6 w-full font-body font-semibold px-6 py-4 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:translate-y-0"
               >
-                Send request
+                {status === "sending" ? "Sending…" : "Send request"}
               </button>
 
-              <p className="mt-3 text-center font-mono text-[12px] text-ink-faint" role="status">
-                {sent
-                  ? "Opening your email app with the details filled in — just hit send."
-                  : "Opens your email app, pre-filled. Or call us directly."}
+              <p
+                className={`mt-3 text-center font-mono text-[12px] ${
+                  status === "sent" ? "text-green" : "text-ink-faint"
+                }`}
+                role="status"
+                aria-live="polite"
+              >
+                {statusMessage}
               </p>
             </form>
           </div>

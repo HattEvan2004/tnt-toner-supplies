@@ -1,10 +1,10 @@
 import Reveal from "./Reveal";
-import { site } from "../lib/site";
-import { RegStrip } from "./Brand";
+import { images } from "../lib/site";
+import ImageSlot from "./ImageSlot";
 
 export default function About() {
   return (
-    <section id="about" className="py-20 md:py-28 bg-paper-2 border-y border-hair">
+    <section id="about" className="py-20 md:py-28">
       <div className="container-x grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <Reveal>
           <p className="eyebrow">Locally owned, locally delivered</p>
@@ -41,47 +41,27 @@ export default function About() {
               </div>
             ))}
           </div>
+
+          <a
+            href="#order"
+            className="mt-8 inline-flex font-body font-semibold px-7 py-3.5 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5"
+          >
+            Place an order
+          </a>
         </Reveal>
 
-        {/* delivery panel — print/receipt aesthetic, no stock photo needed */}
+        {/* real business photo (placeholder until a photo is added) */}
         <Reveal delay={0.12}>
-          <div className="bg-paper rounded-2xl shadow-lift border border-hair overflow-hidden">
-            <RegStrip />
-            <div className="p-7 md:p-9">
-              <div className="flex items-center justify-between">
-                <span className="eyebrow">Delivery note</span>
-                <span className="font-mono text-[12px] text-ink-faint">TNT · HRM</span>
-              </div>
-
-              <div className="mt-7 font-mono text-[14px] divide-y divide-hair">
-                <Row k="Service area" v={site.serviceArea} />
-                <Row k="Delivery fee" v="$0.00 — always free" accent="var(--color-cyan)" />
-                <Row k="Turnaround" v="Same / next business day" />
-                <Row k="Hours" v={site.hours} />
-                <Row k="Phone" v={site.phone} />
-              </div>
-
-              <a
-                href="#contact"
-                className="mt-8 inline-flex w-full justify-center font-body font-semibold px-6 py-3.5 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Place an order
-              </a>
-            </div>
-          </div>
+          <ImageSlot
+            src={images.about || undefined}
+            alt="The TNT Toner Supplies team delivering toner across Halifax and the HRM"
+            label="Add a real photo: the team, the delivery vehicle, or your Halifax storefront."
+            ratio="aspect-[4/5]"
+            rounded="rounded-3xl"
+            className="shadow-lift max-w-[460px] lg:ml-auto"
+          />
         </Reveal>
       </div>
     </section>
-  );
-}
-
-function Row({ k, v, accent }: { k: string; v: string; accent?: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 py-3.5">
-      <span className="text-ink-faint uppercase tracking-wider text-[12px]">{k}</span>
-      <span className="text-ink font-medium text-right" style={{ color: accent }}>
-        {v}
-      </span>
-    </div>
   );
 }

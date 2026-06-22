@@ -1,10 +1,11 @@
 import Reveal from "./Reveal";
 import { site } from "../lib/site";
 import { RegStrip } from "./Brand";
+import { requestPricing } from "../lib/prefill";
 
 export default function FinalCTA() {
   return (
-    <section id="contact" className="py-20 md:py-28">
+    <section id="contact" className="py-20 md:py-28 bg-paper-2 border-y border-hair scroll-mt-20">
       <div className="container-x">
         <Reveal>
           <div className="relative rounded-3xl bg-ink text-paper overflow-hidden shadow-lift">
@@ -17,14 +18,14 @@ export default function FinalCTA() {
             <div className="relative p-10 md:p-16 grid lg:grid-cols-[1.3fr_0.7fr] gap-10 items-center">
               <div>
                 <p className="eyebrow" style={{ color: "rgba(243,238,228,0.6)" }}>
-                  Need toner fast?
+                  Let's get you printing
                 </p>
                 <h2 className="mt-4 text-[clamp(2.2rem,5vw,3.6rem)] text-paper">
-                  Reach out today and we'll help you find the right product.
+                  Need toner fast?
                 </h2>
                 <p className="mt-5 text-[18px] max-w-xl" style={{ color: "rgba(243,238,228,0.72)" }}>
-                  Not sure which cartridge fits your printer? Tell us the make
-                  and model — we'll sort it out and have it on the way.
+                  Send us your printer model or cartridge number and we'll help
+                  you find the right toner.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -32,13 +33,20 @@ export default function FinalCTA() {
                     href="#order"
                     className="font-body font-semibold px-7 py-4 rounded-full bg-paper text-ink hover:-translate-y-0.5 transition-transform duration-300"
                   >
-                    Order toner now
+                    Order toner
                   </a>
+                  <button
+                    type="button"
+                    onClick={() => requestPricing({ requestType: "Request pricing" })}
+                    className="font-body font-semibold px-7 py-4 rounded-full border border-white/25 text-paper hover:bg-white/10 transition-colors duration-300"
+                  >
+                    Request a quote
+                  </button>
                   <a
                     href={site.phoneHref}
                     className="font-body font-semibold px-7 py-4 rounded-full border border-white/25 text-paper hover:bg-white/10 transition-colors duration-300"
                   >
-                    Call {site.phone}
+                    Call TNT
                   </a>
                 </div>
               </div>

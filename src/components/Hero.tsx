@@ -1,8 +1,6 @@
-import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import { site, trustBar } from "../lib/site";
-
-const Printer3D = lazy(() => import("./Printer3D"));
+import { site, trustBar, images } from "../lib/site";
+import ImageSlot from "./ImageSlot";
 
 export default function Hero() {
   return (
@@ -17,7 +15,7 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="container-x grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-8 items-center">
+      <div className="container-x grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
         <div className="relative z-10">
           <motion.p
             className="eyebrow flex items-center gap-3"
@@ -41,9 +39,9 @@ export default function Hero() {
           >
             Fast, free, local
             <br />
-            delivery.{" "}
+            toner{" "}
             <span className="relative inline-block">
-              Always.
+              delivery.
               <span
                 className="absolute left-0 -bottom-1 h-[5px] w-full rounded-full"
                 style={{
@@ -61,9 +59,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.16 }}
           >
-            Genuine, brand-name toner at fair prices — delivered to your door
-            across {site.serviceArea} at no extra charge. Locally owned, with
-            real printer support when you need it.
+            Genuine brand-name toner, printer support, and local service for
+            businesses across the HRM — delivered to your door at no extra
+            charge.
           </motion.p>
 
           <motion.div
@@ -82,32 +80,39 @@ export default function Hero() {
               href="#order"
               className="font-body font-semibold text-[16px] px-7 py-3.5 rounded-full border border-hair-strong text-ink hover:bg-paper-2 transition-all duration-300"
             >
-              Request pricing
+              Request a quote
             </a>
           </motion.div>
         </div>
 
+        {/* real product / delivery photo area (placeholder until a photo is added) */}
         <motion.div
-          className="relative z-10 w-full mx-auto lg:mx-0 lg:ml-auto flex justify-center"
-          initial={{ opacity: 0, scale: 0.96 }}
+          className="relative z-10 w-full"
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Suspense
-            fallback={
-              <div className="w-full aspect-[5/4] max-w-[520px] grid place-items-center">
-                <div className="h-24 w-32 rounded-xl bg-paper-3 animate-pulse" />
-              </div>
-            }
-          >
-            <Printer3D />
-          </Suspense>
+          <ImageSlot
+            src={images.hero || undefined}
+            alt="TNT Toner Supplies — genuine toner cartridges delivered locally across the HRM"
+            label="Add a real photo: toner cartridges, an office printer, or a local delivery."
+            ratio="aspect-[4/3]"
+            rounded="rounded-3xl"
+            className="shadow-lift"
+          />
+          {/* floating trust chip */}
+          <div className="absolute -bottom-4 left-5 md:left-6 bg-paper rounded-full border border-hair shadow-card px-5 py-2.5 flex items-center gap-2.5">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-cyan)" }} />
+            <span className="font-body font-semibold text-[14px] text-ink">
+              Free local delivery · {site.region}
+            </span>
+          </div>
         </motion.div>
       </div>
 
       {/* trust bar */}
       <motion.div
-        className="container-x mt-12 md:mt-16"
+        className="container-x mt-16 md:mt-20"
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.34 }}
