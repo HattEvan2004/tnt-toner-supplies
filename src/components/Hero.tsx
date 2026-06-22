@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { site, trustBar, images } from "../lib/site";
-import ImageSlot from "./ImageSlot";
+import { site, trustBar } from "../lib/site";
+import PrinterArt from "./PrinterArt";
 
 export default function Hero() {
   return (
@@ -85,27 +85,22 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* real product / delivery photo area (placeholder until a photo is added) */}
+        {/* 3D printer illustration */}
         <motion.div
-          className="relative z-10 w-full"
+          className="relative z-10 w-full flex justify-center lg:justify-end"
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <ImageSlot
-            src={images.hero || undefined}
-            alt="TNT Toner Supplies — genuine toner cartridges delivered locally across the HRM"
-            label="Add a real photo: toner cartridges, an office printer, or a local delivery."
-            ratio="aspect-[4/3]"
-            rounded="rounded-3xl"
-            className="shadow-lift"
-          />
-          {/* floating trust chip */}
-          <div className="absolute -bottom-4 left-5 md:left-6 bg-paper rounded-full border border-hair shadow-card px-5 py-2.5 flex items-center gap-2.5">
-            <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-cyan)" }} />
-            <span className="font-body font-semibold text-[14px] text-ink">
-              Free local delivery · {site.region}
-            </span>
+          <div className="relative w-full max-w-[560px]">
+            <PrinterArt />
+            {/* floating trust chip */}
+            <div className="absolute bottom-2 left-2 md:left-4 bg-paper rounded-full border border-hair shadow-card px-5 py-2.5 flex items-center gap-2.5">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-cyan)" }} />
+              <span className="font-body font-semibold text-[14px] text-ink">
+                Free local delivery · {site.region}
+              </span>
+            </div>
           </div>
         </motion.div>
       </div>
