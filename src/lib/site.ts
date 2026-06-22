@@ -22,6 +22,7 @@ export const nav = [
   { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
   { label: "Reviews", href: "#reviews" },
+  { label: "Order", href: "#order" },
 ] as const;
 
 export const trustBar = [
@@ -31,7 +32,25 @@ export const trustBar = [
   "Eco-conscious recycling",
 ] as const;
 
-export const brands = ["Canon", "Brother", "HP", "Xerox"] as const;
+export const brands = ["Canon", "Brother", "HP", "Xerox", "Lexmark"] as const;
+
+export const requestTypes = [
+  "Order toner",
+  "Request pricing",
+  "Check availability",
+  "General question",
+] as const;
+
+export const printerBrandOptions = [
+  "Canon",
+  "Brother",
+  "HP",
+  "Xerox",
+  "Lexmark",
+  "Other / not sure",
+] as const;
+
+export const contactMethods = ["Email", "Phone", "Either"] as const;
 
 /** The four reasons map to the four print plates: C / M / Y / K. */
 export const reasons = [

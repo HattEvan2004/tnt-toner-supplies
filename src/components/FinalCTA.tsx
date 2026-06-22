@@ -29,10 +29,10 @@ export default function FinalCTA() {
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a
-                    href={site.emailHref}
+                    href="#order"
                     className="font-body font-semibold px-7 py-4 rounded-full bg-paper text-ink hover:-translate-y-0.5 transition-transform duration-300"
                   >
-                    Contact TNT
+                    Order toner now
                   </a>
                   <a
                     href={site.phoneHref}

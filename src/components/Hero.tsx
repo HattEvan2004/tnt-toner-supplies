@@ -1,6 +1,8 @@
+import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import PrinterGraphic from "./PrinterGraphic";
 import { site, trustBar } from "../lib/site";
+
+const Printer3D = lazy(() => import("./Printer3D"));
 
 export default function Hero() {
   return (
@@ -71,27 +73,35 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.24 }}
           >
             <a
-              href="#products"
+              href="#order"
               className="font-body font-semibold text-[16px] px-7 py-3.5 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5"
             >
-              Explore products
+              Order toner
             </a>
             <a
-              href="#contact"
+              href="#order"
               className="font-body font-semibold text-[16px] px-7 py-3.5 rounded-full border border-hair-strong text-ink hover:bg-paper-2 transition-all duration-300"
             >
-              Get in touch
+              Request pricing
             </a>
           </motion.div>
         </div>
 
         <motion.div
-          className="relative z-10 max-w-[480px] w-full mx-auto lg:mx-0 lg:ml-auto"
+          className="relative z-10 w-full mx-auto lg:mx-0 lg:ml-auto flex justify-center"
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <PrinterGraphic />
+          <Suspense
+            fallback={
+              <div className="w-full aspect-[5/4] max-w-[520px] grid place-items-center">
+                <div className="h-24 w-32 rounded-xl bg-paper-3 animate-pulse" />
+              </div>
+            }
+          >
+            <Printer3D />
+          </Suspense>
         </motion.div>
       </div>
 

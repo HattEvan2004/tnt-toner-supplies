@@ -7,6 +7,7 @@ import FeaturedProduct from "./components/FeaturedProduct";
 import Services from "./components/Services";
 import Sustainability from "./components/Sustainability";
 import Testimonials from "./components/Testimonials";
+import OrderForm from "./components/OrderForm";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
 
@@ -23,6 +24,7 @@ export default function App() {
         <Services />
         <Sustainability />
         <Testimonials />
+        <OrderForm />
         <FinalCTA />
       </main>
       <Footer />

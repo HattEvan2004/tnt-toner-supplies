@@ -37,10 +37,10 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="#order"
               className="font-body text-[15px] font-semibold px-5 py-2.5 rounded-full bg-ink text-paper hover:shadow-lift transition-all duration-300 hover:-translate-y-0.5"
             >
-              Get in touch
+              Order toner
             </a>
           </nav>
 
@@ -82,11 +82,11 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="#order"
               onClick={() => setOpen(false)}
               className="mt-4 text-center font-body font-semibold px-5 py-3.5 rounded-full bg-ink text-paper"
             >
-              Get in touch
+              Order toner
             </a>
             <a
               href={site.phoneHref}

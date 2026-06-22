@@ -1,6 +1,6 @@
 import Reveal from "./Reveal";
 
-const wordmarks: { name: string; className: string }[] = [
+const brandMarks: { name: string; className: string }[] = [
   { name: "Canon", className: "font-display font-bold tracking-tight" },
   { name: "brother", className: "font-display font-semibold lowercase tracking-tight" },
   { name: "HP", className: "font-display font-extrabold tracking-tight" },
@@ -8,34 +8,46 @@ const wordmarks: { name: string; className: string }[] = [
   { name: "Lexmark", className: "font-display font-semibold tracking-tight" },
 ];
 
+function Track() {
+  // rendered twice inside the track for a seamless -50% loop
+  return (
+    <>
+      {[0, 1].map((dup) => (
+        <ul
+          key={dup}
+          className="flex items-center shrink-0"
+          aria-hidden={dup === 1}
+        >
+          {brandMarks.map((b) => (
+            <li
+              key={`${dup}-${b.name}`}
+              className={`${b.className} text-[30px] md:text-[34px] text-ink-faint hover:text-ink transition-colors duration-300 select-none px-10 md:px-14`}
+            >
+              {b.name}
+            </li>
+          ))}
+        </ul>
+      ))}
+    </>
+  );
+}
+
 export default function BrandStrip() {
   return (
-    <section id="products" className="py-14 md:py-20 bg-paper-2 border-y border-hair">
-      <div className="container-x grid md:grid-cols-[0.9fr_1.1fr] gap-8 md:gap-12 items-center">
+    <section id="products" className="py-12 md:py-16 bg-paper-2 border-y border-hair">
+      <div className="container-x">
         <Reveal>
-          <p className="eyebrow">The brands you already run</p>
-          <h2 className="mt-3 text-[clamp(1.6rem,3vw,2.1rem)]">
-            Genuine, brand-name toner
-          </h2>
-          <p className="mt-3 text-ink-soft max-w-md">
-            We stock the cartridges your office is built around — plus
-            quality-tested compatibles when you want to spend a little less.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.1}>
-          <ul className="flex flex-wrap items-center justify-start md:justify-end gap-x-8 gap-y-6">
-            {wordmarks.map((w) => (
-              <li
-                key={w.name}
-                className={`${w.className} text-[26px] md:text-[30px] text-ink-faint hover:text-ink transition-colors duration-300 cursor-default select-none`}
-              >
-                {w.name}
-              </li>
-            ))}
-          </ul>
+          <p className="eyebrow text-center">Genuine, brand-name toner — the brands you already run</p>
         </Reveal>
       </div>
+
+      <Reveal delay={0.05}>
+        <div className="marquee-mask mt-8 overflow-hidden">
+          <div className="marquee-track">
+            <Track />
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }
